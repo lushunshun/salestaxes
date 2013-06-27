@@ -6,9 +6,9 @@ public enum ProductCategory {
 	Medical(0.0),
 	Other(0.1);
 
-	private taxRate;
+	private double taxRate;
 
-	public ProductCategory(double taxRate){
+	private ProductCategory(double taxRate){
 		this.taxRate = taxRate;
 	}
 

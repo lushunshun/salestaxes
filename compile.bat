@@ -1,0 +1,1 @@
+javac -cp classes;lib/junit-4.11.jar -d classes src/com/mindofprogramming/salestaxes/*.java test/com/mindofprogramming/salestaxes/*.java
