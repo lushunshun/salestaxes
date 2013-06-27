@@ -1,6 +1,8 @@
 package com.mindofprogramming.salestaxes;
 
 public class OrderItem {
+	private static double IMPORT_TAX = 0.05;
+
 	private ProductCategory category;
 	private String productName;
 	private double unitPrice;
@@ -12,6 +14,7 @@ public class OrderItem {
 		this.productName = name;
 		this.unitPrice = unitPrice;
 		this.orderedUnits = units;
+		this.isImported = isImported;
 	}
 
 	public double getTax(){
@@ -19,7 +22,7 @@ public class OrderItem {
 		double preTaxPrice = this.unitPrice * this.orderedUnits;
 		System.out.println("Pre-Tax Price: " + preTaxPrice);
 
-		double taxDue = preTaxPrice * 100 * this.category.getTaxRate();
+		double taxDue = preTaxPrice * 100 * this.getTaxRate();
 		System.out.println("Tax due in pence (not rounded): " + taxDue);
 
 		int roundedTax = (int)(Math.round(taxDue));
@@ -32,8 +35,27 @@ public class OrderItem {
 		return (double) roundedTax / 100;
 	}
 
+	/**
+	 * A much simpler algo to get the number to the nearest 0.05. Thanks to StackOverflow.
+	 * Ref: http://stackoverflow.com/questions/6330852/round-off-decimal-value-up-to-nearest-0-05-value
+	 */
+	public double getTax2(){
+		double preTaxPrice = this.unitPrice * this.orderedUnits;
+		System.out.println("Pre-Tax Price: " + preTaxPrice);
+		double taxDue = preTaxPrice * this.getTaxRate();
+		System.out.println("Tax due in pence (not rounded): " + taxDue);
+
+		double roundedTax = Math.ceil(taxDue * 20) / 20;
+		System.out.println("Tax in pence (rounded): " + roundedTax);
+		return roundedTax;
+	}
+
+	private double getTaxRate(){
+		return this.isImported ? this.category.getTaxRate() + IMPORT_TAX : this.category.getTaxRate();
+	}
+
 	public double getTotal(){
-		double tax = getTax();
+		double tax = getTax2();
 		System.out.println("Tax to pay: " + tax);
 		double pence = (this.unitPrice * this.orderedUnits + tax) * 100;
 		System.out.println("Total in pence: " + pence);
